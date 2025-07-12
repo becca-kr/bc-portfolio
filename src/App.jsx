@@ -88,3 +88,35 @@ const Header = ({ setCurrentPage, userId }) => {
         </header>
     );
 };
+
+// Home Section Component
+const Home = () => (
+    <section id="home" className="min-h-[calc(100vh-120px)] flex flex-col md:flex-row items-center justify-center p-8 bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-inner m-4">
+        {/* Conteúdo de texto - Lado esquerdo em telas médias e maiores */}
+        <div className="w-full md:w-1/2 text-center md:text-left md:px-8 mb-8 md:mb-0">
+            <p className="text-lg text-gray-600 mb-2 font-open-sans">Olá, eu sou a</p>
+            <h1 className="text-4xl md:text-5xl font-montserrat font-bold text-gray-900 leading-tight mb-4">Becca Carvalho!</h1>
+            <h2 className="text-2xl md:text-3xl font-montserrat font-medium text-[#5A6B5B] mb-6">
+                Gastrônoma e Desenvolvedora Front-end
+            </h2>
+            <p className="text-base text-gray-700 leading-relaxed mb-4 font-open-sans">
+                Da Gastronomia à TI: Uma Jornada de Crescimento e Adaptação.
+            </p>
+            <p className="text-base text-gray-700 leading-relaxed mb-10 font-open-sans">
+                Bem-vindo ao meu portfólio.
+            </p>
+            <button className="bg-[#d2bfdf] text-white px-8 py-4 rounded-full text-lg font-semibold shadow-md hover:bg-[#b8a5c3] transition-all duration-300 transform hover:scale-105 font-montserrat">
+                Ver Projetos
+            </button>
+        </div>
+        {/* Conteúdo da imagem - Lado direito em telas médias e maiores */}
+        <div className="w-full md:w-1/2 flex justify-center items-center">
+            <img
+                src="public/img/Perfil (2).png" // Caminho para a imagem na pasta public/img
+                alt="Foto de Perfil de Rebeca Carvalho com elementos gráficos"
+                className="w-full max-w-sm h-auto object-contain"
+            />
+        </div>
+    </section>
+);
+
