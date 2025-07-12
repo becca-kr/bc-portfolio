@@ -443,3 +443,150 @@ const Resume = () => (
     </section>
 );
 
+// Contact Section Component
+const Contact = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+    const [status, setStatus] = useState(''); // 'success', 'error', 'sending'
+    const [loading, setLoading] = useState(false); // Define loading state for Contact component
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true); // Set loading to true when submission starts
+        setStatus('sending');
+
+        // Basic validation
+        if (!formData.name || !formData.email || !formData.message) {
+            setStatus('error');
+            setLoading(false); // Set loading to false on error
+            setTimeout(() => setStatus(''), 3000); // Clear status after 3 seconds
+            return;
+        }
+
+        // In a real application, you would send this data to a backend service
+        // (e.g., using Fetch API to a serverless function, EmailJS, Formspree, etc.)
+        // For this example, we'll just simulate a successful submission.
+        console.log('Formulário enviado:', formData);
+
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        // Reset form and show success message
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setStatus('success');
+        setLoading(false); // Set loading to false after successful submission
+        setTimeout(() => setStatus(''), 3000); // Clear status after 3 seconds
+    };
+
+    return (
+        <section id="contact" className="p-8 md:p-16 bg-white rounded-lg shadow-md m-4">
+            <h2 className="text-4xl font-montserrat font-bold text-gray-800 mb-8 text-center">Entre em Contato</h2>
+            <p className="text-lg text-gray-700 mb-8 text-center font-open-sans max-w-3xl mx-auto">
+                Acredito que conhecimentos diversos ampliam nossa capacidade de inovar. Por isso, sigo ensinando enquanto aprendo! <br/> Vamos conversar?! Preencha o formulário abaixo ou me encontre nas redes sociais!
+            </p>
+
+            <div className="flex flex-col md:flex-row justify-center items-center gap-8 max-w-6xl mx-auto">
+                {/* Formulário de Contato - Lado esquerdo */}
+                <form onSubmit={handleSubmit} className="w-full md:w-1/2 space-y-6 p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-100">
+                    <div>
+                        <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 font-open-sans">Seu nome completo aqui</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#5A6B5B] font-open-sans"
+                            placeholder="Digite seu nome completo"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 font-open-sans">Seu e-mail aqui*</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#5A6B5B] font-open-sans"
+                            placeholder="Digite seu e-mail válido"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="message" className="block text-gray-700 text-sm font-bold mb-2 font-open-sans">Sua mensagem aqui*</label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            rows="5"
+                            value={formData.message}
+                            onChange={handleChange}
+                            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#5A6B5B] font-open-sans"
+                            placeholder="Escreva sua mensagem aqui"
+                            required
+                        ></textarea>
+                    </div>
+                    <button
+                        type="submit"
+                        className="bg-gray-700 text-white px-8 py-3 rounded-full text-lg font-semibold shadow-md hover:bg-[#5A6B5B] transition-all duration-300 w-full font-montserrat"
+                        disabled={loading}
+                    >
+                        {loading ? 'Enviando...' : 'Enviar mensagem agora'}
+                    </button>
+
+                    {status === 'success' && (
+                        <p className="text-green-600 text-center mt-4 font-open-sans">Mensagem enviada com sucesso!</p>
+                    )}
+                    {status === 'error' && (
+                        <p className="text-red-600 text-center mt-4 font-open-sans">Por favor, preencha todos os campos obrigatórios.</p>
+                    )}
+                </form>
+
+                {/* Imagem - Lado direito */}
+                <div className="w-full md:w-1/2 flex justify-center items-center p-4">
+                    <img
+                        src="img/Programacao.jpg" // Caminho para a imagem na pasta public/img
+                        alt="Imagem de contato"
+                        className="w-full h-auto object-cover rounded-lg shadow-lg"
+                    />
+                </div>
+            </div>
+
+            {/* Redes Sociais - Abaixo do formulário e imagem */}
+            <div className="mt-12 text-center">
+                <h3 className="text-2xl font-montserrat font-semibold text-gray-800 mb-4">Me Encontre nas Redes Sociais</h3>
+                <div className="flex justify-center space-x-6">
+                    {/* Ícones de redes sociais - substitua os links */}
+                    <a href="https://linkedin.com/in/becccac/" target="_blank" rel="noopener noreferrer" className="text-[#d2bfdf] hover:text-[#5A6B5B] transition-colors duration-300">
+                        <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fillRule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clipRule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="https://github.com/becca-kr" target="_blank" rel="noopener noreferrer" className="text-[#d2bfdf] hover:text-[#5A6B5B] transition-colors duration-300">
+                        <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fillRule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.799 8.207 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61-.546-1.387-1.334-1.756-1.334-1.756-1.09-.745.083-.73.083-.73 1.205.086 1.838 1.238 1.838 1.238 1.07 1.835 2.809 1.305 3.492.998.108-.775.419-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.382 1.235-3.22-.12-.3-.53-1.52.11-3.175 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.4 3.003-.404 1.02.004 2.046.138 3.003.404 2.29-1.552 3.297-1.23 3.297-1.23.64 1.655.23 2.875.12 3.175.77.838 1.235 1.91 1.235 3.22 0 4.61-2.806 5.625-5.474 5.922.43.37.81 1.096.81 2.222 0 1.606-.015 2.897-.015 3.28 0 .318.21.69.825.577C20.565 21.799 24 17.302 24 12c0-6.627-5.373-12-12-12z" clipRule="evenodd" />
+                        </svg>
+                    </a>
+                    {/* Adicionado o ícone do Instagram */}
+                    <a href="https://instagram.com/beccac.kr" target="_blank" rel="noopener noreferrer" className="text-[#d2bfdf] hover:text-[#5A6B5B] transition-colors duration-300">
+                        <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fillRule="evenodd" d="M12 0C8.74 0 8.333.01 7.043.072 5.754.134 4.846.368 4.04.755 3.229 1.141 2.525 1.76 1.897 2.389s-1.248 1.328-1.634 2.139c-.387.807-.62 1.715-.683 3.006C.01 8.333 0 8.74 0 12s.01 3.667.072 4.957c.062 1.29.296 2.201.683 3.006.387.811 1.092 1.439 1.72 2.068.629.63 1.339 1.139 2.15 1.526.807.387 1.715.62 3.006.683C8.333 23.99 8.74 24 12 24s3.667-.01 4.957-.072c1.29-.062 2.201-.296 3.006-.683.811-.387 1.439-1.092 2.068-1.72.63-.629 1.139-1.339 1.526-2.15.387-.807.62-1.715.683-3.006C23.99 15.667 24 15.26 24 12s-.01-3.667-.072-4.957c-.062-1.29-.296-2.201-.683-3.006-.387-.811-1.092-1.439-1.72-2.068-.629-.63-1.339-1.139-2.15-1.526C18.771.368 17.863.134 16.574.072 15.26 0 14.846 0 12 0zm0 2.16c3.2 0 3.585.016 4.859.077 1.17.055 1.805.249 2.227.425.695.286 1.226.742 1.714 1.23.49.488.945 1.019 1.23 1.714.176.422.37 1.052.425 2.227.061 1.274.077 1.659.077 4.859s-.016 3.585-.077 4.859c-.055 1.17-.249 1.805-.425 2.227-.286.695-.742 1.226-1.23 1.714-.488.49-1.019.945-1.714 1.23-.422.176-1.052.37-2.227.425-1.274.061-1.659.077-4.859.077s-3.585-.016-4.859-.077c-1.17-.055-1.805-.249-2.227-.425-.695-.286-1.226-.742-1.714-1.23-.49-.488-.945-1.019-1.23-1.714-.176-.422-.37-1.052-.425-2.227-.061-1.274-.077-1.659-.077-4.859s.016-3.585.077-4.859c.055-1.17.249-1.805.425-2.227.286-.695.742-1.226 1.23-1.714.488-.49 1.019-.945 1.714-1.23.422-.176 1.052-.37 2.227-.425C8.415 2.16 8.8 2.16 12 2.16zm0 3.635c-3.462 0-6.264 2.802-6.264 6.264s2.802 6.264 6.264 6.264 6.264-2.802 6.264-6.264-2.802-6.264-6.264-6.264zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.964-10.406c-.846 0-1.48.634-1.48 1.48s.634 1.48 1.48 1.48 1.48-.634 1.48-1.48-.634-1.48-1.48-1.48z" clipRule="evenodd" />
+                        </svg>
+                    </a>
+                    {/* Adicione mais ícones conforme necessário (Behance, Twitter, etc.) */}
+                </div>
+            </div>
+        </section>
+    );
+};
+
