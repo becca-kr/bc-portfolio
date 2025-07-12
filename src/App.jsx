@@ -225,3 +225,178 @@ const About = ({ setCurrentPage }) => { // Recebendo setCurrentPage como prop
         </>
     );
 };
+
+// Projects Section Component (with Image Generation)
+const Projects = () => {
+    const [prompt, setPrompt] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    // Function to generate image using Imagen API
+    const generateImage = async () => {
+        if (!prompt.trim()) {
+            setError('Por favor, insira um prompt para gerar a imagem.');
+            return;
+        }
+        setLoading(true);
+        setImageUrl('');
+        setError('');
+
+        try {
+            const payload = { instances: { prompt: prompt }, parameters: { "sampleCount": 1 } };
+            const apiKey = ""; // Canvas will automatically provide this
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
+                const generatedImageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                setImageUrl(generatedImageUrl);
+            } else {
+                setError('Falha ao gerar imagem. Resposta inesperada do servidor.');
+                console.error('API Response:', result);
+            }
+        } catch (err) {
+            setError('Erro ao conectar com a API de geração de imagem. Tente novamente.');
+            console.error('Fetch error:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Example projects data - personalize with your own projects
+    const techProjectsData = [
+        {
+            id: 1,
+            title: 'Projeto Portfólio',
+            description: 'Um site de portfólio pessoal construído com React e Tailwind CSS, aplicando princípios de design Japandi.',
+            image: 'img/projeto (1).jpeg', // Caminho para a imagem na pasta public/img
+            link: 'https://github.com/becca-kr/bc-portifolio', // Link atualizado para o Projeto 1
+            technologies: ['React', 'Tailwind CSS', 'JavaScript'],
+        },
+        {
+            id: 2,
+            title: 'Aplicação de Gerenciamento de Tarefas',
+            description: 'Uma aplicação web para organizar e gerenciar tarefas diárias, com funcionalidades de arrastar e soltar.',
+            image: 'img/projeto (2).jpeg', // Caminho para a imagem na pasta public/img
+            link: '#',
+            technologies: ['Vue.js', 'Node.js', 'MongoDB'],
+        },
+        {
+            id: 3,
+            title: 'Criação de Banco de Dados em TypeScript', // Título atualizado
+            description: 'Projeto de backend focado na criação e gerenciamento de banco de dados utilizando TypeScript.', // Descrição atualizada
+            image: 'img/projeto (3).jpeg', // Caminho para a imagem na pasta public/img
+            link: 'https://github.com/becca-kr/Projeto-React-Backend', // Link atualizado para o Projeto 3
+            technologies: ['TypeScript', 'Node.js', 'SQL/NoSQL'], // Tecnologias atualizadas
+        },
+    ];
+
+    // Gastronomy gallery data - personalize with your own images
+    const gastronomyImages = [
+        { id: 1, src: 'img/Confeitaria (4).jpg', alt: 'Doce Fino de Confeitaria Artística' },
+        { id: 2, src: 'img/Aula (2).png', alt: 'Bolo Decorado com Pasta Americana' },
+        { id: 3, src: 'img/Aula (6).png', alt: 'Sobremesa Francesa Clássica' },
+        { id: 4, src: 'img/Aula (20).jpg', alt: 'Mesa de Doces Finos' },
+        { id: 5, src: 'img/Aula (22).jpg', alt: 'Prato Gourmet Empratado' },
+        { id: 6, src: 'img/Confeitaria (2).jpg', alt: 'Variedade de Doces para Eventos' },
+    ];
+
+    return (
+        <section id="projects" className="p-8 md:p-16 bg-white rounded-lg shadow-md m-4">
+            <h2 className="text-4xl font-montserrat font-bold text-gray-800 mb-4 text-center">Meus Projetos</h2>
+            <p className="text-lg text-gray-700 leading-relaxed mb-10 text-center max-w-3xl mx-auto font-open-sans">
+                Caminho em direção a um futuro com propósito, diversidade e a constante busca pelo conhecimento e adaptação.
+            </p>
+
+            {/* Seção de Projetos de Tecnologia */}
+            <h3 className="text-3xl font-montserrat font-bold text-gray-800 mb-8 text-center mt-12">Projetos de Tecnologia</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {techProjectsData.map((project) => (
+                    <div key={project.id} className="bg-gray-50 rounded-lg shadow-sm overflow-hidden border border-gray-100 transform hover:scale-105 transition-transform duration-300">
+                        <img src={project.image} alt={project.title} className="w-full h-52 object-cover" />
+                        <div className="p-6">
+                            <h3 className="text-2xl font-montserrat font-semibold text-gray-800 mb-2">{project.title}</h3>
+                            <p className="text-gray-700 mb-4 font-open-sans">{project.description}</p>
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                {project.technologies.map((tech, index) => (
+                                    <span key={index} className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full font-open-sans">
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+                            <a
+                                href={project.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block bg-green-700 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition-colors duration-300 font-montserrat"
+                            >
+                                Ver Projeto
+                            </a>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Seção da Galeria de Gastronomia */}
+            <h3 className="text-3xl font-montserrat font-bold text-gray-800 mb-8 text-center mt-20 pt-16 border-t border-gray-200">Galeria de Gastronomia</h3>
+            <p className="text-lg text-gray-700 mb-10 text-center max-w-3xl mx-auto font-open-sans">
+                Aqui você pode ver um pouco do meu trabalho e paixão pela confeitaria artística e francesa.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                {gastronomyImages.map((image) => (
+                    <div key={image.id} className="bg-gray-50 rounded-lg shadow-sm overflow-hidden border border-gray-100 transform hover:scale-105 transition-transform duration-300">
+                        <img
+                            src={image.src}
+                            alt={image.alt}
+                            className="w-full h-64 object-cover"
+                            // Fallback para imagem caso o URL não carregue
+                            onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/600x400/E0E0E0/374151?text=Imagem+Nao+Encontrada`; }}
+                        />
+                        <div className="p-4">
+                            <p className="text-gray-700 text-center font-medium font-open-sans">{image.alt}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Image Generation Section */}
+            <div className="mt-20 pt-16 border-t border-gray-200 text-center max-w-3xl mx-auto">
+                <h3 className="text-3xl font-montserrat font-bold text-gray-800 mb-6">Gerador de Imagens (AI)</h3>
+                <p className="text-lg text-gray-700 mb-6 font-open-sans">
+                    Experimente gerar uma imagem usando inteligência artificial. Descreva o que você gostaria de ver!
+                </p>
+                <textarea
+                    className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5A6B5B] mb-4 text-gray-800 font-open-sans" // Nova cor oliva
+                    rows="4"
+                    placeholder="Descreva a imagem que você quer gerar (ex: 'uma floresta de bambu minimalista com névoa e luz suave')"
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                ></textarea>
+                <button
+                    onClick={generateImage}
+                    className="bg-[#5A6B5B] text-white px-8 py-3 rounded-full text-lg font-semibold shadow-md hover:bg-gray-800 transition-all duration-300 font-montserrat" // Nova cor oliva
+                    disabled={loading}
+                >
+                    {loading ? 'Gerando...' : 'Gerar Imagem'}
+                </button>
+
+                {error && <p className="text-red-600 mt-4 font-open-sans">{error}</p>}
+
+                {imageUrl && (
+                    <div className="mt-8">
+                        <h4 className="text-xl font-montserrat font-semibold text-gray-800 mb-4">Imagem Gerada:</h4>
+                        <img src={imageUrl} alt="Imagem Gerada por IA" className="max-w-full h-auto rounded-lg shadow-lg mx-auto border border-gray-200" />
+                    </div>
+                )}
+            </div>
+        </section>
+    );
+};
