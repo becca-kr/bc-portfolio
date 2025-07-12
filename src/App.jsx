@@ -590,3 +590,9 @@ const Contact = () => {
     );
 };
 
+// Footer Component
+const Footer = () => (
+    <footer className="bg-gray-800 text-white py-6 px-4 text-center rounded-t-lg mt-4">
+        <p>&copy; {new Date().getFullYear()} REBECA CARVALHO. Todos os direitos reservados.</p>
+    </footer>
+);
