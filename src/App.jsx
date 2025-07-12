@@ -596,3 +596,85 @@ const Footer = () => (
         <p>&copy; {new Date().getFullYear()} REBECA CARVALHO. Todos os direitos reservados.</p>
     </footer>
 );
+
+// Main App Component
+const App = () => {
+    const [currentPage, setCurrentPage] = useState('home');
+    const [db, setDb] = useState(null);
+    const [auth, setAuth] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [isAuthReady, setIsAuthReady] = useState(false);
+
+    useEffect(() => {
+        // Initialize Firebase
+        try {
+            const app = initializeApp(firebaseConfig);
+            const firestore = getFirestore(app);
+            const authentication = getAuth(app);
+            setDb(firestore);
+            setAuth(authentication);
+
+            // Set up authentication state listener
+            const unsubscribe = onAuthStateChanged(authentication, async (user) => {
+                if (user) {
+                    setUserId(user.uid);
+                } else {
+                    // Sign in anonymously if no user is authenticated
+                    try {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(authentication, initialAuthToken);
+                        } else {
+                            await signInAnonymously(authentication);
+                        }
+                        setUserId(authentication.currentUser?.uid || crypto.randomUUID()); // Fallback to random UUID if anonymous sign-in fails to get UID
+                    } catch (error) {
+                        console.error("Firebase Auth Error:", error);
+                        setUserId(crypto.randomUUID()); // Use a random ID if auth fails
+                    }
+                }
+                setIsAuthReady(true);
+            });
+
+            // Cleanup listener on component unmount
+            return () => unsubscribe();
+        } catch (error) {
+            console.error("Firebase Initialization Error:", error);
+            setIsAuthReady(true); // Ensure app can still render even if Firebase fails
+            setUserId(crypto.randomUUID()); // Provide a fallback user ID
+        }
+    }, []); // Empty dependency array means this runs once on mount
+
+    // Render content based on currentPage state
+    const renderPage = () => {
+        switch (currentPage) {
+            case 'home':
+                return <Home />;
+            case 'about':
+                return <About setCurrentPage={setCurrentPage} />; // Passando setCurrentPage
+            case 'projects':
+                return <Projects />;
+            case 'resume':
+                return <Resume />;
+            case 'contact':
+                return <Contact />;
+            default:
+                return <Home />;
+        }
+    };
+
+    return (
+        <div className="min-h-screen bg-gray-100 font-sans text-gray-800">
+            <Header setCurrentPage={setCurrentPage} userId={userId} />
+            <main className="container mx-auto p-4">
+                {isAuthReady ? renderPage() : (
+                    <div className="flex justify-center items-center h-screen">
+                        <p className="text-xl text-gray-600">Carregando autenticação...</p>
+                    </div>
+                )}
+            </main>
+            <Footer />
+        </div>
+    );
+};
+
+export default App;
