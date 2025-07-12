@@ -400,3 +400,46 @@ const Projects = () => {
         </section>
     );
 };
+
+// Resume Section Component
+const Resume = () => (
+    <section id="resume" className="p-8 md:p-16 bg-gray-50 rounded-lg shadow-md m-4">
+        <h2 className="text-4xl font-montserrat font-bold text-gray-800 mb-8 text-center">Currículo</h2>
+        <div className="max-w-4xl mx-auto text-center">
+            <p className="text-lg text-gray-700 mb-8 font-open-sans">
+                Você pode visualizar meu currículo online ou fazer o download em formato PDF.
+            </p>
+            <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-8">
+                <a
+                    href="https://www.canva.com/design/DAGWdMtUCdU/uKLwMeAm5UyUC8woPVCNUg/view?utm_content=DAGWdMtUCdU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h39a762bc4b" // Link do Canva para o currículo
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[#d2bfdf] text-white px-8 py-4 rounded-full text-lg font-semibold shadow-md hover:bg-[#b8a5c3] transition-all duration-300 transform hover:scale-105 flex items-center justify-center font-montserrat" // Aplicado o estilo do botão "Ver Projetos"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Visualizar Online
+                </a>
+                <a
+                    href="/path/to/your/Curriculo_Rebeca_Carvalho.pdf" // Substitua pelo caminho real do seu arquivo PDF se for hospedar diretamente
+                    download="Curriculo_Rebeca_Carvalho.pdf"
+                    className="bg-gray-700 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-md hover:bg-[#5A6B5B] transition-all duration-300 transform hover:scale-105 flex items-center justify-center font-montserrat" // Mantido o verde oliva para o download, mas você pode mudar para o roxo se preferir
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Download PDF
+                </a>
+            </div>
+            {/* Opcional: Adicione um iframe para incorporar o PDF diretamente na página
+                Para isso, você precisaria hospedar o PDF em um local acessível publicamente e usar o link aqui.
+            */}
+            {/* <div className="mt-12 w-full max-w-4xl mx-auto h-[80vh] border border-gray-300 rounded-lg shadow-md">
+                <iframe src="LINK_DO_SEU_CURRICULO_PDF_AQUI" className="w-full h-200" title="Visualizador de Currículo"></iframe>
+            </div> */}
+        </div>
+    </section>
+);
+
