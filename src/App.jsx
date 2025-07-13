@@ -79,18 +79,13 @@ const Header = ({ setCurrentPage, userId }) => {
                     </div>
                 )}
 
-                {userId && (
-                    <div className="hidden md:block text-sm text-gray-500 ml-4 font-open-sans"> {/* Escondido em mobile */}
-                        ID do Usuário: <span className="font-mono text-gray-700">{userId}</span>
-                    </div>
-                )}
             </nav>
         </header>
     );
 };
 
 // Home Section Component
-const Home = () => (
+const Home = ({ setCurrentPage }) => ( // Recebendo setCurrentPage como prop
     <section id="home" className="min-h-[calc(100vh-120px)] flex flex-col md:flex-row items-center justify-center p-8 bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-inner m-4">
         {/* Conteúdo de texto - Lado esquerdo em telas médias e maiores */}
         <div className="w-full md:w-1/2 text-center md:text-left md:px-8 mb-8 md:mb-0">
@@ -105,14 +100,17 @@ const Home = () => (
             <p className="text-base text-gray-700 leading-relaxed mb-10 font-open-sans">
                 Bem-vindo ao meu portfólio.
             </p>
-            <button className="bg-[#d2bfdf] text-white px-8 py-4 rounded-full text-lg font-semibold shadow-md hover:bg-[#b8a5c3] transition-all duration-300 transform hover:scale-105 font-montserrat">
+            <button
+                onClick={() => setCurrentPage('projects')} // Adiciona a função de navegação para 'projects'
+                className="bg-[#d2bfdf] text-white px-8 py-4 rounded-full text-lg font-semibold shadow-md hover:bg-[#b8a5c3] transition-all duration-300 transform hover:scale-105 font-montserrat"
+            >
                 Ver Projetos
             </button>
         </div>
         {/* Conteúdo da imagem - Lado direito em telas médias e maiores */}
         <div className="w-full md:w-1/2 flex justify-center items-center">
             <img
-                src="public/img/Perfil (2).png" // Caminho para a imagem na pasta public/img
+                src="img/Perfil (2).png" // Caminho para a imagem na pasta public/img
                 alt="Foto de Perfil de Rebeca Carvalho com elementos gráficos"
                 className="w-full max-w-sm h-auto object-contain"
             />
@@ -278,7 +276,7 @@ const Projects = () => {
             title: 'Projeto Portfólio',
             description: 'Um site de portfólio pessoal construído com React e Tailwind CSS, aplicando princípios de design Japandi.',
             image: 'img/projeto (1).jpeg', // Caminho para a imagem na pasta public/img
-            link: 'https://github.com/becca-kr/bc-portifolio', // Link atualizado para o Projeto 1
+            link: 'https://github.com/becca-kr/bc-portfolio', // Link atualizado para o Projeto 1
             technologies: ['React', 'Tailwind CSS', 'JavaScript'],
         },
         {
@@ -301,12 +299,12 @@ const Projects = () => {
 
     // Gastronomy gallery data - personalize with your own images
     const gastronomyImages = [
-        { id: 1, src: 'img/Confeitaria (4).jpg', alt: 'Doce Fino de Confeitaria Artística' },
-        { id: 2, src: 'img/Aula (2).png', alt: 'Bolo Decorado com Pasta Americana' },
-        { id: 3, src: 'img/Aula (6).png', alt: 'Sobremesa Francesa Clássica' },
-        { id: 4, src: 'img/Aula (20).jpg', alt: 'Mesa de Doces Finos' },
-        { id: 5, src: 'img/Aula (22).jpg', alt: 'Prato Gourmet Empratado' },
-        { id: 6, src: 'img/Confeitaria (2).jpg', alt: 'Variedade de Doces para Eventos' },
+        { id: 1, src: 'img/Confeitaria (4).jpg', alt: 'Encomendas' },
+        { id: 2, src: 'img/Aula (2).png', alt: 'Aulas de confeitaria' },
+        { id: 3, src: 'img/Aula (6).png', alt: 'Encomendas' },
+        { id: 4, src: 'img/Aula (20).jpg', alt: 'Aula de pratos quentes' },
+        { id: 5, src: 'img/Aula (22).jpg', alt: 'Aula de conservas' },
+        { id: 6, src: 'img/Confeitaria (2).jpg', alt: 'Aula de bolos sem gluten' },
     ];
 
     return (
@@ -336,7 +334,7 @@ const Projects = () => {
                                 href={project.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-block bg-green-700 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition-colors duration-300 font-montserrat"
+                                className="inline-block bg-[#d2bfdf] text-white px-5 py-2 rounded-full text-sm font-semibold shadow-md hover:bg-[#b8a5c3] transition-colors duration-300 font-montserrat" // Cor do botão alterada
                             >
                                 Ver Projeto
                             </a>
@@ -423,7 +421,7 @@ const Resume = () => (
                     Visualizar Online
                 </a>
                 <a
-                    href="/path/to/your/Curriculo_Rebeca_Carvalho.pdf" // Substitua pelo caminho real do seu arquivo PDF se for hospedar diretamente
+                    href="https://drive.google.com/file/d/1kGREOpxT6AtlfhpY0l47rTIhMc79aYx1/view?usp=sharing" // Substitua pelo caminho real do seu arquivo PDF se for hospedar diretamente
                     download="Curriculo_Rebeca_Carvalho.pdf"
                     className="bg-gray-700 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-md hover:bg-[#5A6B5B] transition-all duration-300 transform hover:scale-105 flex items-center justify-center font-montserrat" // Mantido o verde oliva para o download, mas você pode mudar para o roxo se preferir
                 >
@@ -465,7 +463,7 @@ const Contact = () => {
         setStatus('sending');
 
         // Basic validation
-        if (!formData.name || !formData.email || !formData.message) {
+        if (!formData.name || !formData.email || !!formData.message) { // Corrigido: Removido o '!' extra
             setStatus('error');
             setLoading(false); // Set loading to false on error
             setTimeout(() => setStatus(''), 3000); // Clear status after 3 seconds
@@ -538,7 +536,7 @@ const Contact = () => {
                     </div>
                     <button
                         type="submit"
-                        className="bg-gray-700 text-white px-8 py-3 rounded-full text-lg font-semibold shadow-md hover:bg-[#5A6B5B] transition-all duration-300 w-full font-montserrat"
+                        className="bg-[#d2bfdf] text-white px-8 py-3 rounded-full text-lg font-semibold shadow-md hover:bg-[#b8a5c3] transition-all duration-300 w-full font-montserrat" // Cor do botão alterada
                         disabled={loading}
                     >
                         {loading ? 'Enviando...' : 'Enviar mensagem agora'}
@@ -593,7 +591,7 @@ const Contact = () => {
 // Footer Component
 const Footer = () => (
     <footer className="bg-gray-800 text-white py-6 px-4 text-center rounded-t-lg mt-4">
-        <p>&copy; {new Date().getFullYear()} REBECA CARVALHO. Todos os direitos reservados.</p>
+        <p>&copy; {new Date().getFullYear()} Becca Carvalho. Todos os direitos reservados.</p>
     </footer>
 );
 
@@ -644,11 +642,28 @@ const App = () => {
         }
     }, []); // Empty dependency array means this runs once on mount
 
+    // Adicionado useEffect para rolar a página quando currentPage muda
+    useEffect(() => {
+        const section = document.getElementById(currentPage);
+        if (section) {
+            // Calcula a posição para rolar, ajustando para o cabeçalho fixo
+            const headerOffset = document.querySelector('header')?.offsetHeight || 0;
+            const elementPosition = section.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        }
+    }, [currentPage]); // Roda sempre que currentPage muda
+
+
     // Render content based on currentPage state
     const renderPage = () => {
         switch (currentPage) {
             case 'home':
-                return <Home />;
+                return <Home setCurrentPage={setCurrentPage} />; // Passando setCurrentPage
             case 'about':
                 return <About setCurrentPage={setCurrentPage} />; // Passando setCurrentPage
             case 'projects':
